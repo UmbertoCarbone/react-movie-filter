@@ -14,34 +14,51 @@ const categoryFilm = [
 function App() {
   const [list, setList] = useState(categoryFilm)
   const [item, setItem] = useState("")
-   function handleSubmit(e) {
+  const [search, setSearch] = useState("")
+
+
+
+  function handleSubmit(e) {
     e.preventDefault();
-    setList([
-      ...list,
-      {
-        id: crypto.randomUUID(),
-        title: item,
-      }
+    setList([...list,
+    { title: item, }
     ])
     setItem("");
   }
 
+
+  useEffect(() => {
+    console.log("Lista aggiornata", list)
+    // Qui potresti fare qualcosa con la lista aggiornata, come salvarla in un database o aggiornare un altro stato.
+  }, [list,search])
+
+
+
   return (
     <div className="container text-center">
       <h1 className="bg-secondary-subtle">Film</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={item} onChange={e => { setItem(e.target.value) }} />
-        <button type="submit" className="btn btn-success ms-2">
-          <i className="bi bi-plus"></i>
-        </button>
-      </form >
+      {/* Ricerca */}
+      <input
+        type="select"
+        placeholder="Cerca film..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
       <ul className="list-unstyled">
+        {/* Array film */}
         {list.map((film) => (
           <li key={film.title}>
             <strong>{film.title}</strong> - <em>{film.genere}</em>
           </li>
         ))}
       </ul>
+      {/* Aggiungi Film */}
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={item.title} onChange={e => { setItem(e.target.value) }} />
+        <button type="submit" className="btn btn-success ms-2">
+          <i className="bi bi-plus"></i>
+        </button>
+      </form >
     </div>
   )
 }
