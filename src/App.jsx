@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+const categoryFilm = [
+  { title: 'Inception', genere: 'Fantascienza' },
+  { title: 'Il Padrino', genere: 'Thriller' },
+  { title: 'Titanic', genere: 'Romantico' },
+  { title: 'Batman', genere: 'Azione' },
+  { title: 'Interstellar', genere: 'Fantascienza' },
+  { title: 'Pulp Fiction', genere: 'Thriller' },
+]
+
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [list, setList] = useState(categoryFilm)
+  const [item, setItem] = useState("")
+   function handleSubmit(e) {
+    e.preventDefault();
+    setList([
+      ...list,
+      {
+        id: crypto.randomUUID(),
+        title: item,
+      }
+    ])
+    setItem("");
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="container text-center">
+      <h1 className="bg-secondary-subtle">Film</h1>
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={item} onChange={e => { setItem(e.target.value) }} />
+        <button type="submit" className="btn btn-success ms-2">
+          <i className="bi bi-plus"></i>
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </form >
+      <ul className="list-unstyled">
+        {list.map((film) => (
+          <li key={film.title}>
+            <strong>{film.title}</strong> - <em>{film.genere}</em>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
+
 
 export default App
