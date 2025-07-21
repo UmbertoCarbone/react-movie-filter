@@ -12,16 +12,16 @@ const categoryFilm = [
 function App() {
   const [list, setList] = useState(categoryFilm)
   const [item, setItem] = useState("")
-  const [newGenere, setNewGenere] = useState("")
+  const [genere, setGenere] = useState("")
   const [search, setSearch] = useState("")
   const [searchCategoria, setSearchCategoria] = useState("")
-  const [filteredMovies, setFilteredMovies] = useState(categoryFilm)
+  const [filteredMovies, setFilteredMovies] = useState([])
 
   function handleSubmit(e) {
     e.preventDefault();
-    setList([...list, { title: item, genere: newGenere }])
+    setList([...list, { title: item, genere: genere }])
     setItem("");
-
+    setGenere("");
   }
 
   useEffect(() => {
@@ -49,8 +49,8 @@ function App() {
         onChange={e => setSearchCategoria(e.target.value)}
       />
       <ul className="list-unstyled">
-        {filteredMovies.map((film) => (
-          <li key={film.title}>
+        {filteredMovies.map((film, idx) => (
+          <li key={film.title + film.genere + idx}>
             <strong>{film.title}</strong> - <em>{film.genere}</em>
           </li>
         ))}
@@ -66,8 +66,8 @@ function App() {
         />
         <input
           type="text"
-          value={newGenere}
-          onChange={e => setNewGenere(e.target.value)}
+          value={genere}
+          onChange={e => setGenere(e.target.value)}
           placeholder="Categoria nuovo film"
           className="me-2"
         />
