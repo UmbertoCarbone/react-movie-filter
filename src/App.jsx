@@ -26,12 +26,13 @@ function App() {
     setItem("");
   }
 
-
   useEffect(() => {
-    console.log("Lista aggiornata", list)
-    // Qui potresti fare qualcosa con la lista aggiornata, come salvarla in un database o aggiornare un altro stato.
-  }, [list,search])
 
+    const filtered = list.filter(film =>
+      film.title.toLowerCase().includes(search.toLowerCase())
+    );
+    console.log(filtered);
+  }, [search,list]);
 
 
   return (
@@ -39,7 +40,7 @@ function App() {
       <h1 className="bg-secondary-subtle">Film</h1>
       {/* Ricerca */}
       <input
-        type="select"
+        type="text"
         placeholder="Cerca film..."
         value={search}
         onChange={e => setSearch(e.target.value)}
