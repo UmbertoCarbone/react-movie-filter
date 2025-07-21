@@ -15,6 +15,7 @@ function App() {
   const [list, setList] = useState(categoryFilm)
   const [item, setItem] = useState("")
   const [search, setSearch] = useState("")
+  const [filteredMovies, setfilteredMovies] = useState([])
 
 
 
@@ -24,6 +25,8 @@ function App() {
     { title: item, }
     ])
     setItem("");
+
+
   }
 
   useEffect(() => {
@@ -31,8 +34,10 @@ function App() {
     const filtered = list.filter(film =>
       film.title.toLowerCase().includes(search.toLowerCase())
     );
-    console.log(filtered);
-  }, [search,list]);
+    console.log(filtered)
+    setfilteredMovies(filtered)
+  }, [search, list]);
+
 
 
   return (
@@ -42,14 +47,13 @@ function App() {
       <input
         type="text"
         placeholder="Cerca film..."
-        value={search}
-        onChange={e => setSearch(e.target.value)}
+        value={search} onChange={e => setSearch(e.target.value)}
       />
       <ul className="list-unstyled">
         {/* Array film */}
-        {list.map((film) => (
-          <li key={film.title}>
-            <strong>{film.title}</strong> - <em>{film.genere}</em>
+        {filteredMovies.map((list) => (
+          <li key={list.title}>
+            <strong>{list.title}</strong> - <em>{list.genere}</em>
           </li>
         ))}
       </ul>
