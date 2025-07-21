@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+
 const categoryFilm = [
   { title: 'Inception', genere: 'Fantascienza' },
   { title: 'Il Padrino', genere: 'Thriller' },
@@ -8,37 +9,28 @@ const categoryFilm = [
   { title: 'Pulp Fiction', genere: 'Thriller' },
 ]
 
-
-
-
 function App() {
   const [list, setList] = useState(categoryFilm)
   const [item, setItem] = useState("")
+  const [newGenere, setNewGenere] = useState("")
   const [search, setSearch] = useState("")
-  const [filteredMovies, setfilteredMovies] = useState([])
-
-
+  const [searchCategoria, setSearchCategoria] = useState("")
+  const [filteredMovies, setFilteredMovies] = useState(categoryFilm)
 
   function handleSubmit(e) {
     e.preventDefault();
-    setList([...list,
-    { title: item, }
-    ])
+    setList([...list, { title: item, genere: newGenere }])
     setItem("");
-
 
   }
 
   useEffect(() => {
-
     const filtered = list.filter(film =>
-      film.title.toLowerCase().includes(search.toLowerCase())
+      film.title.toLowerCase().includes(search.toLowerCase()) &&
+      film.genere.toLowerCase().includes(searchCategoria.toLowerCase())
     );
-    console.log(filtered)
-    setfilteredMovies(filtered)
-  }, [search, list]);
-
-
+    setFilteredMovies(filtered)
+  }, [search, searchCategoria, list]);
 
   return (
     <div className="container text-center">
@@ -47,26 +39,44 @@ function App() {
       <input
         type="text"
         placeholder="Cerca film..."
-        value={search} onChange={e => setSearch(e.target.value)}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Cerca Categoria..."
+        value={searchCategoria}
+        onChange={e => setSearchCategoria(e.target.value)}
       />
       <ul className="list-unstyled">
-        {/* Array film */}
-        {filteredMovies.map((list) => (
-          <li key={list.title}>
-            <strong>{list.title}</strong> - <em>{list.genere}</em>
+        {filteredMovies.map((film) => (
+          <li key={film.title}>
+            <strong>{film.title}</strong> - <em>{film.genere}</em>
           </li>
         ))}
       </ul>
       {/* Aggiungi Film */}
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={item.title} onChange={e => { setItem(e.target.value) }} />
-        <button type="submit" className="btn btn-success ms-2">
+      <form onSubmit={handleSubmit} className="d-flex justify-content-center align-items-center">
+        <input
+          type="text"
+          value={item}
+          onChange={e => setItem(e.target.value)}
+          placeholder="Titolo nuovo film"
+          className="me-2"
+        />
+        <input
+          type="text"
+          value={newGenere}
+          onChange={e => setNewGenere(e.target.value)}
+          placeholder="Categoria nuovo film"
+          className="me-2"
+        />
+        <button type="submit" className="btn btn-success">
           <i className="bi bi-plus"></i>
         </button>
-      </form >
+      </form>
     </div>
   )
 }
 
-
-export default App
+export default App 
